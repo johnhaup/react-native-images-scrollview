@@ -1,26 +1,19 @@
-# react-native-images-scrollview
+<div align="center">
+  <h1>react-native-images-scrollview</h1>
+  <a href="https://www.youtube.com/watch?v=3jqTqrGtGjg">
+    <img alt="photos" width=150 src="photos.svg">
+  </a>
+  <p>Images View for React Native with pinch, pan, and scroll.</p>
+</div>
+<hr />
 
-Horizontal images scrollview with pinch, zoom, tap
+## Motivation
+
+Provide an image scroller that has no-setup support for pinch, pan, and scroll.
 
 ## Installation
 
-```sh
-npm install react-native-images-scrollview
-```
-
-## Usage
-
-```js
-import { multiply } from 'react-native-images-scrollview';
-
-// ...
-
-const result = await multiply(3, 7);
-```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+This library requires [reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation) and [gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/installation). Follow their installation instructions.
 
 ## License
 
