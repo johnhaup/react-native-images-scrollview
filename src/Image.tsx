@@ -4,6 +4,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   measure,
   runOnJS,
+  useAnimatedReaction,
   useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
@@ -60,6 +61,20 @@ export function Image({
     offsetScale.value = 1;
   };
 
+  useAnimatedReaction(
+    () => scale.value === 1,
+    (isInitialScale, prevIsInitialScale) => {
+      if (isInitialScale && !prevIsInitialScale) {
+        runOnJS(setHasZoomed)(false);
+        resetPosition();
+      }
+
+      if (!isInitialScale && prevIsInitialScale) {
+        runOnJS(setHasZoomed)(true);
+      }
+    }
+  );
+
   const pinchGesture = Gesture.Pinch()
     .onUpdate((e) => {
       const newScale = offsetScale.value * e.scale;
@@ -69,16 +84,6 @@ export function Image({
     })
     .onEnd(() => {
       offsetScale.value = scale.value;
-
-      runOnJS(setHasZoomed)(scale.value > 1);
-
-      if (scale.value === 1) {
-        transX.value = withTiming(0);
-        transY.value = withTiming(0);
-        offsetX.value = 0;
-        offsetY.value = 0;
-        resetPosition();
-      }
     });
 
   const panGesture = Gesture.Pan()
@@ -112,11 +117,12 @@ export function Image({
     })
     .onEnd(() => {
       if (scrollTriggered.value) {
-        resetPosition();
         scrollTriggered.value = false;
+        resetPosition();
       } else {
         offsetX.value = transX.value;
         offsetY.value = transY.value;
+
         const measured: MeasuredDimensions | null = measure(wrapperRef);
 
         if (measured) {
