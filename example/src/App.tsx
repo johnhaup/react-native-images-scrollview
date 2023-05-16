@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React from 'react';
 import { ImagesScrollView } from 'react-native-images-scrollview';
 
 const images = new Array(5)
