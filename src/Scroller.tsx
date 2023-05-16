@@ -10,12 +10,7 @@ import { Image } from './Image';
 interface Props {
   urls: string[];
   onImagePress?: ({ uri, index }: { uri: string; index: number }) => void;
-  loading?: boolean;
   initialIndex?: number;
-  imageWidth?: number;
-  imageHeight?: number;
-  aspectRatio?: number;
-  margin?: number;
   panScrollTriggerThresholdPercentage?: number;
 }
 
@@ -24,9 +19,6 @@ const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 export function ImagesScrollView({
   urls,
-  imageWidth = SCREEN_WIDTH,
-  imageHeight = SCREEN_HEIGHT,
-  margin = 0,
   onImagePress,
   initialIndex,
   panScrollTriggerThresholdPercentage = 0.2,
@@ -34,21 +26,16 @@ export function ImagesScrollView({
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollValue = useScrollViewOffset(scrollRef);
 
-  const scrollInterval = useMemo(
-    () => imageWidth + margin,
-    [margin, imageWidth]
-  );
-
   const panScrollTriggerThreshold = useMemo(
-    () => imageWidth * panScrollTriggerThresholdPercentage,
-    [imageWidth, panScrollTriggerThresholdPercentage]
+    () => SCREEN_WIDTH * panScrollTriggerThresholdPercentage,
+    [panScrollTriggerThresholdPercentage]
   );
 
   const triggerScroll = (forward?: boolean) => {
     'worklet';
     const toValue = forward
-      ? scrollValue.value + scrollInterval
-      : scrollValue.value - scrollInterval;
+      ? scrollValue.value + SCREEN_WIDTH
+      : scrollValue.value - SCREEN_WIDTH;
     scrollTo(scrollRef, toValue, 0, true);
   };
 
@@ -65,8 +52,8 @@ export function ImagesScrollView({
         onPress={onPress}
         disableTap={!onImagePress}
         uri={uri}
-        width={imageWidth}
-        height={imageHeight}
+        width={SCREEN_WIDTH}
+        height={SCREEN_HEIGHT}
         panScrollTriggerThreshold={panScrollTriggerThreshold}
         triggerScroll={triggerScroll}
       />
@@ -76,9 +63,9 @@ export function ImagesScrollView({
   return (
     <Animated.ScrollView
       ref={scrollRef}
-      snapToInterval={scrollInterval}
+      snapToInterval={SCREEN_WIDTH}
       contentOffset={{
-        x: initialIndex ? initialIndex * scrollInterval : 0,
+        x: initialIndex ? initialIndex * SCREEN_WIDTH : 0,
         y: 0,
       }}
       decelerationRate="fast"
