@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image as RNImage, StyleSheet, View } from 'react-native';
+import { Image as RNImage } from 'react-native';
 import {
   Directions,
   Gesture,
