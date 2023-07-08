@@ -11,6 +11,8 @@
 
 Provide a no-setup solution for a full screen image scroller with pinch and zoom on each image.
 
+<img alt="demo" src="./__tests__/demo.gif" width=300 height=605/>
+
 ## Installation
 
 This library requires [reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation) and [gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/docs/installation). Follow their installation instructions.
@@ -18,14 +20,17 @@ This library requires [reanimated](https://docs.swmansion.com/react-native-reani
 ## Usage
 
 ```js
-// MyCoolHomeScreen.tsx
+// ImageScroller.tsx
 import * as React from 'react';
 import { ImagesScrollView } from 'react-native-images-scrollview';
 
-import images from '@assets/images';
+interface Props {
+  initialIndex?: number;
+  urls: string[];
+}
 
-export default function App() {
-  return <ImagesScrollView urls={images} />;
+export function ImageScroller({ initialIndex, urls }: Props) {
+  return <ImagesScrollView initialIndex={initialIndex} urls={urls} />;
 }
 ```
 
